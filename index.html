@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		body, html {width: 100%;height: 100%;margin:0;font-size: 18px;font-family:"微软雅黑";}
+		#allmap{top:0;width:100%;min-height:930px;}
+		#allmap .BMapLabel{background-color: #2d89f0 !important;transition: all 0.2s}
+		#allmap .BMapLabel .labelicon{position: absolute;left: -20px;top: 25px;width:30px;height: 40px}
+
+		#allmap .BMapLabel .labelname{padding:0px 13px;text-align:center;margin-top:5px;}
+		#allmap .BMapLabel.active{background-color: #ec2323 !important;border-color: #ec2323 !important;z-index: 99999 !important;}
+		#allmap .clustererContent{transition: all 0.3s}
+		#allmap .clustererContent:hover{background-color: #ec2323 !important;}
+	</style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=YGHbweOX30DiGOugVhOBt1gI7b4L5bSu"></script>
+	<script type="text/javascript" src="TextIconOverlay.js"></script>
+	<script type="text/javascript" src="MarkerClusterer.js"></script>
+	<title>安保通地图找项目点</title>
+</head>
+<body>
+	<div id="allmap"></div>
+	<script src="mymap.js"></script>
+	<script type="text/javascript">
+
+		/*实例名称只能取mymap -_-*/
+		var mymap = new myMap(['number','123']);
+		mymap.init()
+		var testaddr2 = [{"id":16,"lat":"41.731898","lng":"123.432989","mapCity":"沈阳市","mapDistrict":"沈阳市浑南区","mapProvince":"辽宁省","userName":"辽宁展厅","number":"16"},
+		{"id":49,"lat":"36.01844","lng":"103.799418","mapCity":"兰州市","mapDistrict":"兰州市七里河区","mapProvince":"甘肃省","userName":"甘肃展厅","number":"49"},
+		{"id":42,"lat":"26.25801","lng":"107.51898","mapCity":"黔南布依族苗族自治州","mapDistrict":"黔南布依族苗族自治州","mapProvince":"贵州省","userName":"贵州展厅","number":"42"},
+		{"id":29,"lat":"22.751099","lng":"114.28619","mapCity":"深圳市","mapDistrict":"深圳市龙岗区","mapProvince":"广东省","userName":"广东中安金狮","number":"29"},
+		{"id":2,"lat":"23.025978","lng":"113.756693","mapCity":"东莞市","mapDistrict":"东莞市虎门镇","mapProvince":"广东省","userName":"万科金色华庭","number":"2"},
+		{"id":9,"lat":"22.36239","lng":"114.13948","mapCity":"香港","mapDistrict":"九龙","mapProvince":"香港特别行政区","userName":"通宏护卫","number":"9"}]
+
+		mymap.rerender(testaddr2)
+	</script>
+</body>
+</html>
