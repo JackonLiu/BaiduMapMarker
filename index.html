@@ -1,39 +1,168 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<style type="text/css">
-		body, html {width: 100%;height: 100%;margin:0;font-size: 18px;font-family:"微软雅黑";}
-		#allmap{top:0;width:100%;min-height:930px;}
-		#allmap .BMapLabel{background-color: #2d89f0 !important;transition: all 0.2s}
-		#allmap .BMapLabel .labelicon{position: absolute;left: -20px;top: 25px;width:30px;height: 40px}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-		#allmap .BMapLabel .labelname{padding:0px 13px;text-align:center;margin-top:5px;}
-		#allmap .BMapLabel.active{background-color: #ec2323 !important;border-color: #ec2323 !important;z-index: 99999 !important;}
-		#allmap .clustererContent{transition: all 0.3s}
-		#allmap .clustererContent:hover{background-color: #ec2323 !important;}
-	</style>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=YGHbweOX30DiGOugVhOBt1gI7b4L5bSu"></script>
-	<script type="text/javascript" src="TextIconOverlay.js"></script>
-	<script type="text/javascript" src="MarkerClusterer.js"></script>
-	<title>安保通地图找项目点</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=YGHbweOX30DiGOugVhOBt1gI7b4L5bSu"></script>
+    <script type="text/javascript" src="TextIconOverlay.js"></script>
+    <script type="text/javascript" src="MarkerClusterer.js"></script>
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="huadong.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+
+    <title>安保通地图找项目点</title>
 </head>
 <body>
-	<div id="allmap"></div>
-	<script src="mymap.js"></script>
-	<script type="text/javascript">
+<div class="navbar" role="navigation">
+    <div class="position1">
+        <label class="font-type">安保通地图找项目点</label>
+    </div>
+</div>
 
-		/*实例名称只能取mymap -_-*/
-		var mymap = new myMap(['number','123']);
-		mymap.init()
-		var testaddr2 = [{"id":16,"lat":"41.731898","lng":"123.432989","mapCity":"沈阳市","mapDistrict":"沈阳市浑南区","mapProvince":"辽宁省","userName":"辽宁展厅","number":"16"},
-		{"id":49,"lat":"36.01844","lng":"103.799418","mapCity":"兰州市","mapDistrict":"兰州市七里河区","mapProvince":"甘肃省","userName":"甘肃展厅","number":"49"},
-		{"id":42,"lat":"26.25801","lng":"107.51898","mapCity":"黔南布依族苗族自治州","mapDistrict":"黔南布依族苗族自治州","mapProvince":"贵州省","userName":"贵州展厅","number":"42"},
-		{"id":29,"lat":"22.751099","lng":"114.28619","mapCity":"深圳市","mapDistrict":"深圳市龙岗区","mapProvince":"广东省","userName":"广东中安金狮","number":"29"},
-		{"id":2,"lat":"23.025978","lng":"113.756693","mapCity":"东莞市","mapDistrict":"东莞市虎门镇","mapProvince":"广东省","userName":"万科金色华庭","number":"2"},
-		{"id":9,"lat":"22.36239","lng":"114.13948","mapCity":"香港","mapDistrict":"九龙","mapProvince":"香港特别行政区","userName":"通宏护卫","number":"9"}]
 
-		mymap.rerender(testaddr2)
-	</script>
+<!-- 侧滑菜单 -->
+<div id="wrapper">
+    <div class="baidu-maps" id="allmap">
+    </div>
+    <div class="overlay"></div>
+
+    <!-- Sidebar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+        <ul class="nav sidebar-nav">
+            <div class="content__item__main">
+                <a href="http://192.168.16.45:8000/dashboard/detail">
+                    <img class="content__item__aside" src="video-screen.png">
+                    <p class="content__item__title">护卫点：中安金狮</p>
+                </a>
+                    <p class="content__item__tag--wrapper">安全指数：优</p>
+                    <p class="content__item__tag--wrapper">地址：龙岗区南湾街道</p>
+                    <p class="content__item__tag--wrapper">人口：5026人</p>
+                    <p class="content__item__tag--wrapper">面积：8.4万平米</p>
+                    <p class="content__item__tag--wrapper">周界长度：8公里</p>
+                    <p class="content__item__tag--wrapper">停车位：56个</p>
+                    <p class="content__item__tag--wrapper">保安在职人数：78人</p>
+                    <p class="content__item__tag--wrapper">当班人数：21人</p>
+                    <p class="content__item__tag--wrapper">固定岗：18人</p>
+                    <p class="content__item__tag--wrapper">巡逻岗：8人</p>
+                    <p class="content__item__tag--wrapper">人流量：78人/小时</p>
+                    <p class="content__item__tag--wrapper">车流量：8辆/小时</p>
+                    <p class="content__item__tag--wrapper">设备总数：32个</p>
+                    <p class="content__item__tag--wrapper">任务总数：718个</p>
+                    <p class="content__item__tag--wrapper">告警总数：708个</p>
+                    <p class="content__item__tag--wrapper">来访人数：28人</p>
+                    <p class="content__item__tag--wrapper">考试题数：100道</p>
+            </div>
+        </ul>
+    </nav>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <button type="button" class="hamburger is-closed animated fadeInLeft" data-toggle="offcanvas">
+            <span class="hamb-top"></span>
+            <span class="hamb-middle"></span>
+            <span class="hamb-bottom"></span>
+        </button>
+    </div>
+</div>
+
+
+<script src="mymap.js"></script>
+<script type="text/javascript">
+
+
+    /*实例名称只能取mymap -_-{"id":9,"lat":"22.36239","lng":"114.13948","mapCity":"香港","mapDistrict":"九龙","mapProvince":"香港特别行政区","userName":"通宏护卫","number":"9"}*/
+    var mymap = new myMap(['number', '123']);
+    mymap.init()
+    var testaddr2 = [{
+        "id": 16,
+        "lat": "41.731898",
+        "lng": "123.432989",
+        "mapCity": "沈阳市",
+        "mapDistrict": "沈阳市浑南区",
+        "mapProvince": "辽宁省",
+        "userName": "辽宁展厅",
+        "number": "16"
+    },
+        {
+            "id": 49,
+            "lat": "36.01844",
+            "lng": "103.799418",
+            "mapCity": "兰州市",
+            "mapDistrict": "兰州市七里河区",
+            "mapProvince": "甘肃省",
+            "userName": "甘肃展厅",
+            "number": "49"
+        },
+        {
+            "id": 42,
+            "lat": "26.25801",
+            "lng": "107.51898",
+            "mapCity": "黔南布依族苗族自治州",
+            "mapDistrict": "黔南布依族苗族自治州",
+            "mapProvince": "贵州省",
+            "userName": "贵州展厅",
+            "number": "42"
+        },
+        {
+            "id": 29,
+            "lat": "22.751099",
+            "lng": "114.28619",
+            "mapCity": "深圳市",
+            "mapDistrict": "深圳市龙岗区",
+            "mapProvince": "广东省",
+            "userName": "广东中安金狮",
+            "number": "29"
+        },
+        {
+            "id": 26,
+            "lat": "22.721740",
+            "lng": "114.06031",
+            "mapCity": "深圳市",
+            "mapDistrict": "深圳市龙华区",
+            "mapProvince": "广东省",
+            "userName": "广东中安金狮",
+            "number": "23"
+        },
+        {
+            "id": 21,
+            "lat": "22.54836",
+            "lng": "114.13166",
+            "mapCity": "深圳市",
+            "mapDistrict": "深圳市罗湖区",
+            "mapProvince": "广东省",
+            "userName": "广东中安金狮",
+            "number": "21"
+        },
+        {
+            "id": 2,
+            "lat": "23.025978",
+            "lng": "113.756693",
+            "mapCity": "东莞市",
+            "mapDistrict": "东莞市虎门镇",
+            "mapProvince": "广东省",
+            "userName": "万科金色华庭",
+            "number": "2"
+        },
+    ]
+
+    mymap.rerender(testaddr2);
+
+    function show() {
+        var trigger = $('.hamburger'),
+            isClosed = false;
+        if (isClosed === true) {
+            trigger.removeClass('is-open');
+            trigger.addClass('is-closed');
+        } else {
+            trigger.removeClass('is-closed');
+            trigger.addClass('is-open');
+        }
+        $('#wrapper').toggleClass('toggled');
+    };
+</script>
+
 </body>
 </html>

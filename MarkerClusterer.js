@@ -150,6 +150,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
             });
 
             var mkrs = opts["markers"];
+
             isArray(mkrs) && this.addMarkers(mkrs);
         };
 
@@ -164,6 +165,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         //     this._pushMarkerTo(markers[i]);
         // }
         this._markers = markers
+        console.log( this._markers);
         this._createClusters();
         /*边界事件*/
         var _tempcluster = document.querySelectorAll('.clustererContent')
@@ -227,7 +229,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         //this.clearMarkers();
         var _zoom = this._map.getZoom();
         var that = this
-
+        console.log('根据数据，创建聚合点')
         for(var i = 0;i<statis.length;i++){
             if(_zoom <=7){
                 var cluster = new Cluster(that);
@@ -326,6 +328,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
                     }
 
                     var clusterType = marker.province;
+
                     if(_zoom>7&&_zoom<=10){
                         clusterType = marker.city;
                     }else if(_zoom>10&&_zoom<=13){
@@ -647,7 +650,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         }
         this._map.addOverlay(this._clusterMarker);
 		this._isReal = true;
-        this.updateClusterMarker();
+        this.updateClusterMarker(this._markers);
         return true;
     };
 
@@ -708,39 +711,34 @@ var BMapLib = window.BMapLib = BMapLib || {};
             borderRadius : "0px",
             opacity: '0.8',
             fontWeight : 'normal',
+            fontFamily:'宋体',
         });
         var _icons = "other";
         switch(this._markerClusterer._mymap.currentType)
         {
             case 'KJRC':
-                _icons = "person"
+                _icons = "person";
                 break;
             case 'KJCG':
-                _icons = "KJCG"
+                _icons = "KJCG";
                 break;
         }
         var content = '<span id="label-'+marker.id+'" labelid="'+marker.id+'" class="labelicon '+_icons+'"></span>'+'<span class="labelname">'+marker.person+'</span>';
-        label.setContent(content)
+        label.setContent(content);
         label.setPosition(position);
         label.itype = "single"
-        label.iid = marker.id
-        label.addEventListener("click",jumurl,false)
+        label.iid = marker.id;
+        label.addEventListener("click",show,false);
         this._labels.push(label);
         this._map.addOverlay(label);
-    }
-
-    /**
-     * 跳转到项目详情页
-     */
-    function jumurl(){
-        window.location.href = 'http://192.168.16.45:8000/dashboard/detail';
     }
 
     /**
      * 更新该聚合的显示样式，也即TextIconOverlay。
      * @return 无返回值。
      */
-    Cluster.prototype.updateClusterMarker = function () {
+    Cluster.prototype.updateClusterMarker = function (markers) {
+        var number = []
         if (this._map.getZoom() > this._markerClusterer.getMaxZoom()) {
             this._clusterMarker && this._map.removeOverlay(this._clusterMarker);
             for (var i = 0, marker; marker = this._markers[i]; i++) {
@@ -759,7 +757,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
         /*计算当前显示所属*/
         var zoom = this._map.getZoom()
-        var number = 1
+
         var _belongText = ""
         if (zoom<=7) {
             _belongText = this._markers[0].province
@@ -776,13 +774,22 @@ var BMapLib = window.BMapLib = BMapLib || {};
                 _belongText = this._markers[0].city +"片区"
             }
         }
-        this.areatype =_belongText
-        this._clusterMarker.boundaryText = _belongText
+
+        number = markers[0].number;
+        if(_belongText==='广东省'){
+            number=75
+        }
+        if(_belongText==='深圳市'){
+            number=73
+        }
+        console.log(number);
         this._clusterMarker.setText(this._renderText(number,_belongText));
 
         var thatMap = this._map;
         var thatBounds = this.getBounds();
         var center = this._center;
+        this.areatype =_belongText
+        this._clusterMarker.boundaryText = _belongText
 
         //this._clusterMarker.addEventListener("click", mymap.getBoundary);
         this._clusterMarker.onclick = mymap.getBoundary
@@ -792,18 +799,18 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
     /*自定义聚合文字显示*/
     Cluster.prototype._renderText = function(text,_belongtexts) {
-        text = (typeof text == "number")?text:text.length
+        // text = (typeof text == "number")?text:text.length
         var _text = ""
         switch(this._markerClusterer._mymap.currentType)
         {
             case 'KJRC':
-                _text = ""
+                _text = "护卫点"
                 break;
             case 'KJCG':
                 _text = "项目点"
                 break;
         }
-        return '<p>'+_belongtexts+'</p><p>'+text+_text+'</p>'
+        return '<p>'+_belongtexts+'</p><p>'+text+' 个'+_text+'</p>'
     }
 
     /**
